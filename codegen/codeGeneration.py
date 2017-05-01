@@ -214,7 +214,7 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
 
     elif ast.label[:7] == 'readInt':
         instructionList = []
-        instructionList.append("# readInt")
+        # instructionList.append("# readInt")
         instructionList.append("li $v0, 5")
         instructionList.append("syscall")
 
@@ -282,7 +282,7 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
                 symTable['pointer'] -= 4
                 sourceRight = symTable[retArgs[1]]
 
-        instructionList.append("# {}".format(ast.label.split(':')[0]))
+        # instructionList.append("# {}".format(ast.label.split(':')[0]))
 
         # load the left operand
         instructionList.append("lw $t1, {}($fp)".format(sourceLeft))
