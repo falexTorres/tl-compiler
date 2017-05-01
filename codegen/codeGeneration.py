@@ -26,8 +26,6 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
     if not symTable:
         symTable = {}
         symTable['pointer'] = 0
-        symTable['cal'] = symTable['pointer']
-        symTable['pointer'] -= 4
 
     # list of items that will be returned from children
     retArgs = []
@@ -166,18 +164,31 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
 
     elif ast.label[:2] == ':=':
         instructionList = []
+        print(retArgs)
         if isinstance(retArgs[1], list):
             # for instr in retArgs[1]:
             #     if instr:
             #         instructionList.append(instr)
             instructionList.extend(retArgs[1])
+            if not ast.children[1].label.split(':')[0] == 'readInt':
+                sourceReg = instructionList[-1].split()[2][:-5]
         else:
-            instructionList.append(retArgs[1])
+            if retArgs[1] in symTable:
+                sourceReg = symTable[retArgs[1]]
+            else:
+                symTable[retArgs[1]] = symTable['pointer']
+                symTable['pointer'] -= 4
+                sourceReg = symTable[retArgs[1]]
+                instructionList.append("li $t0, {}".format(retArgs[0]))
+                instructionList.append("sw $t0, {}($fp)".format(sourceReg))
+            instructionList.append("lw $t1, {}($fp)".format(sourceReg))
 
         if ast.children[1].label.split(':')[0] == 'readInt':
             instructionList.append("add $t0, $v0, $zero")
         else:
-            instructionList.append("ASIGN {0}, {1}, $zero".format(retArgs[0], 'sourceReg'))
+            print(instructionList)
+            instructionList.append("add $t0, $t1, $zero".format())
+
         instructionList.append("sw $t0, {}($fp)".format(symTable[retArgs[0]]))
         return instructionList
 
@@ -261,6 +272,8 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
                 symTable[retArgs[0]] = symTable['pointer']
                 symTable['pointer'] -= 4
                 sourceLeft = symTable[retArgs[0]]
+                instructionList.append("li $t0, {}".format(retArgs[0]))
+                instructionList.append("sw $t0, {}($fp)".format(sourceLeft  ))
 
         # right side
         if isinstance(retArgs[1], list):
@@ -281,6 +294,8 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
                 symTable[retArgs[1]] = symTable['pointer']
                 symTable['pointer'] -= 4
                 sourceRight = symTable[retArgs[1]]
+                instructionList.append("li $t0, {}".format(retArgs[1]))
+                instructionList.append("sw $t0, {}($fp)".format(sourceRight))
 
         # instructionList.append("# {}".format(ast.label.split(':')[0]))
 
