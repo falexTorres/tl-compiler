@@ -1,0 +1,75 @@
+Compiler Documentation
+
+To run the compiler, run `exec.sh <input file>`.
+exec.sh may need to be chmodded first. To chmod the scripts, just run the
+command `source build.sh`
+
+##################################
+build.sh
+To run for the first time, need to run `source build.sh`
+This script chmods build.sh and exec.sh to make them executable.
+
+##################################
+exec.sh
+Calls python3 and passes compiler.py (in a directory above) and any other 
+command line arguments.
+
+##################################
+compiler.py
+Main file for the compiler.
+Expects a single command line argument which is the file to be compiled.
+Calls scanner.py
+
+##################################
+scanner.py
+Takes a file and base name as input.
+Produces a file named with the base name and of the type tok.
+
+lexer(inputFile, baseName)
+Opens or creates the file <baseName>.tok
+Reads the inputFile line by line and processes the tokens.
+
+processToken(tok, lineNumber, output)
+takes in a token, line number, and output file as input.
+Processes a token and determines if it is valid.
+Prints to stdout if there was an invalid token. Prints the line number and
+possible cause.
+
+findSubTok(tok, subStringLength, output)
+Takes a token, length of a substring, and output file as input.
+Checks the substring of a token for a valid token. 
+If a valid substring token is found, then the substring will be written 
+to the output file as a token and the part of the token that isn't in the
+substring is checked to see if it's a valid token.
+
+validToken(tok, output)
+Takes a token and output file as input.
+Checks if the token is valid according to TL 16 specs.
+If the token is valid, then the token is written to the output file.
+Returns a boolean value based on if the token is valid or not.
+
+############## 
+ParseRv5.py
+
+Class Parser: 
+	Wrapper class containing the main imperative processing of the parser. Calls static helper classes for grammar verification and AST synthesis. Makes use of Node and ASTree objects.
+
+ASTree.py
+Class ASTree:
+	A single ASTree object is used to represent the Abstract Syntax Tree, also contains a helper method for type checking and GraphViz generation.
+
+Node.py
+Class Node:
+	A Node object represents a single node in the AST and contains all necessary information for AST synthesis and type checking.
+
+SyntaxChecker.py
+Class Checker:
+	Contains static methods used to check the syntax of various grammar elements.
+
+AstBuilder.py
+Class Builder:
+	Contains static methods used in AST synthesis. Static methods assume that the input token stream is syntactically valid.
+
+#################################################
+
+
