@@ -5,8 +5,13 @@ import parser.ASTree
 
 operators = ['*', 'div', 'mod', '+', '-', '=', '!=', '<', '>', '<=', '>=']
 
-def generate_code(ast):
-    three_code_gen(ast)
+
+def generate_code(ast, base_name):
+    rootBlock = three_code_gen(ast)
+
+    with open(base_name + '.cfg.dot', 'w') as output:
+        output.write(create_controlflow_graphviz(rootBlock))
+        output.close()
 
 
 def three_code_gen(ast):
@@ -15,7 +20,9 @@ def three_code_gen(ast):
 
     three_code_walk_ast(rootBlock, ast)
 
-    print(create_controlflow_graphviz(rootBlock))
+    # print(create_controlflow_graphviz(rootBlock))
+
+    return rootBlock
 
 
 def three_code_walk_ast(block, ast, parent='program', symTable = None):

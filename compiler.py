@@ -36,6 +36,6 @@ if parser_flag > 0:
     print("\ncompilation failed due to TYPE error\n")
     sys.exit(2)
 
-generate_code(ast)
+generate_code(ast, base_name)
 
 print("\nCompilation of " + inputFile + " successful\n")   
