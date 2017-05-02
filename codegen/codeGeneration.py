@@ -172,6 +172,7 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
             instructionList.extend(retArgs[1])
             if not ast.children[1].label.split(':')[0] == 'readInt':
                 sourceReg = instructionList[-1].split()[2][:-5]
+                instructionList.append("lw $t1, {}($fp)".format(sourceReg))
         else:
             if retArgs[1] in symTable:
                 sourceReg = symTable[retArgs[1]]
@@ -208,11 +209,11 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
         block.add_instruction(retArgs[0])
 
         # grab the cmp stack address
-        cmpReg = block.instructions[-1].split()[1][:-1]
+        cmpReg = block.instructions[-1].split()[2][:-5]
         block.add_instruction("lw $t0, {}($fp)".format(cmpReg))
         # branch option
         # branches to then block
-        block.add_instruction("bne $t0, {}".format(block.thenBlock.label))
+        block.add_instruction("bne $t0, $zero, {}".format(block.thenBlock.label))
 
         # add the jump for the else block
         block.add_instruction("j {}".format(block.elseBlock))
@@ -228,11 +229,11 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
         block.add_instruction(retArgs[0])
 
         # grab the cmp stack address
-        cmpReg = block.instructions[-1].split()[1][:-1]
+        cmpReg = block.instructions[-1].split()[2][:-5]
         block.add_instruction("lw $t0, {}($fp)".format(cmpReg))
         # branch option
         # branches to then block
-        block.add_instruction("bne $t0, {}".format(block.thenBlock.label))
+        block.add_instruction("bne $t0, $zero, {}".format(block.thenBlock.label))
 
         # add the jump for the else block
         block.add_instruction("j {}".format(block.elseBlock))
@@ -343,27 +344,28 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
 
 
         if ast.label[:1] == '*':
-            instructionList.append("mul $t0, $t1, $t2")
+            instructionList.append("mult $t0, $t1, $t2")
         elif ast.label[:3] == 'div':
-            instructionList.append("DIV $t0, $t1, $t2")
+            instructionList.append("div $t0, $t1, $t2")
         elif ast.label[:3] == 'mod':
-            instructionList.append("MOD $t0, $t1, $t2")
+            instructionList.append("rem $t0, $t1, $t2")
         elif ast.label[:1] == '+':
             instructionList.append("add $t0, $t1, $t2")
         elif ast.label[:1] == '-':
-            instructionList.append("SUB $t0, $t1, $t2")
+            instructionList.append("sub $t0, $t1, $t2")
         elif ast.label[:1] == '=':
-            instructionList.append("EQUAL $t0, $t1, $t2")
+            instructionList.append("seq $t0, $t1, $t2")
         elif ast.label[:1] == '!':
-            instructionList.append("NOT $t0, $t1, $t2")
-        elif ast.label[:1] == '<':
-            instructionList.append("LESS $t0, $t1, $t2")
-        elif ast.label[:1] == '>':
-            instructionList.append("GREATER $t0, $t1, $t2")
+            instructionList.append("sne $t0, $t1, $t2")
         elif ast.label[:2] == '<=':
-            instructionList.append("LE $t0, $t1, $t2")
+            instructionList.append("sle $t0, $t1, $t2")
         elif ast.label[:2] == '>=':
-            instructionList.append("GE $t0, $t1, $t2")
+            instructionList.append("seq $t0, $t1, $t2")
+        elif ast.label[:1] == '<':
+            instructionList.append("slt $t0, $t1, $t2")
+        elif ast.label[:1] == '>':
+            instructionList.append("sgt $t0, $t1, $t2")
+
 
         storeAddress = symTable['pointer']
         symTable['pointer'] -= 4
