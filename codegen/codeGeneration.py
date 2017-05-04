@@ -428,10 +428,11 @@ def create_controlflow_graphviz(rootBlock):
     return controlFlowString
 
 
-def block_to_string_walk(block):
-    if not block.instructions:
+def block_to_string_walk(block, printedBlocks = []):
+    if not block.instructions or block.label in printedBlocks:
         return ""
 
+    printedBlocks.append(block.label)
     controlFlowString = "   {0} [label=<<TABLE ALIGN=\"LEFT\" border=\"0\"> " \
                         "   <TR><TD border=\"1\" colspan=\"3\">{1}</TD></TR>\n".format(block.label, block.label)
 
@@ -452,7 +453,7 @@ def block_to_string_walk(block):
         if block.entryBlock and block.thenBlock.label == block.entryBlock.label:
             pass
         else:
-            controlFlowString += block_to_string_walk(block.thenBlock)
+            controlFlowString += block_to_string_walk(block.thenBlock, printedBlocks)
 
     if block.elseBlock:
         if not block.elseBlock.instructions:
@@ -460,7 +461,7 @@ def block_to_string_walk(block):
         else:
             controlFlowString += "   {0} -> {1}\n".format(block.label, block.elseBlock.label)
 
-        controlFlowString += block_to_string_walk(block.elseBlock)
+        controlFlowString += block_to_string_walk(block.elseBlock, printedBlocks)
 
     if not block.thenBlock and not block.elseBlock:
         controlFlowString += "   exit\n   {0} -> exit\n".format(block.label)
