@@ -147,6 +147,7 @@ def typeCheck(node, symbolTable):
                 if child.category == 'variable':
                     if not re.match("^[0-9]+$", child.value):
                         if child.value == 'true' or child.value == 'false' \
+                                or child.value not in symbolTable \
                                 or not symbolTable[child.value] == 'int':
                             node.isError = True
                             errorFlag = 1
