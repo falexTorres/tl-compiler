@@ -43,10 +43,39 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
 
     # call each child and append it's return item to the list
     # block generation here also
-    for child in ast.children:
+    for index, child in enumerate(ast.children):
         # handle if and while child nodes
         # They need a new block
-        if child.label == 'if' or child.label == 'while':
+        if child.label == 'if':
+            # create the cond block
+            assignBlock.thenBlock = Block()
+            assignBlock.thenBlock.entryBlock = assignBlock
+
+            # create the then block for inside of the if statement
+            assignBlock.thenBlock.thenBlock = Block()
+            assignBlock.thenBlock.thenBlock.entryBlock = assignBlock.thenBlock
+
+            # create the else or resume block
+            assignBlock.thenBlock.elseBlock = Block()
+            assignBlock.thenBlock.elseBlock.entryBlock = assignBlock.thenBlock
+
+            # check if there's an else statement
+            # if so, then create the resume block
+            if ast.children[index+1].label == 'stmt list':
+                assignBlock.thenBlock.elseBlock.thenBlock = Block()
+                assignBlock.thenBlock.elseBlock.thenBlock.entryBlock = assignBlock.thenBlock
+
+                # connect the inside of if-statement block to resume
+                assignBlock.thenBlock.thenBlock.thenBlock = assignBlock.thenBlock.elseBlock.thenBlock
+            else:
+                # connect inside of if-statement block to resume block
+                assignBlock.thenBlock.thenBlock.thenBlock = assignBlock.thenBlock.elseBlock
+
+            retArgs.append(three_code_walk_ast(assignBlock.thenBlock, child, ast.label, symTable))
+
+            assignBlock = assignBlock.thenBlock.elseBlock
+
+        elif child.label == 'while':
             # create the cond block
             assignBlock.thenBlock = Block()
             assignBlock.thenBlock.entryBlock = assignBlock
@@ -73,22 +102,21 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
         #    do nothing
         elif child.label == 'stmt list':
             if ast.label == 'stmt list':
-                retArgs.append(three_code_walk_ast(assignBlock, child, ast.label, symTable))
-
                 # resume block for else statement
-                assignBlock.thenBlock = Block()
-                assignBlock.thenBlock.entryBlock = assignBlock
+                # assignBlock.thenBlock = Block()
+                # assignBlock.thenBlock.entryBlock = assignBlock
 
                 # connect the if statement's then block to the resume
-                assignBlock.entryBlock.thenBlock.thenBlock = assignBlock.thenBlock
+                # assignBlock.entryBlock.thenBlock.thenBlock = assignBlock.thenBlock
+
+                retArgs.append(three_code_walk_ast(assignBlock, child, ast.label, symTable))
 
                 assignBlock = assignBlock.thenBlock
 
             # create the then block for the cond block
             elif ast.label == 'if':
-                assignBlock.thenBlock = Block()
-                assignBlock.thenBlock.entryBlock = assignBlock
-
+                # assignBlock.thenBlock = Block()
+                # assignBlock.thenBlock.entryBlock = assignBlock
                 retArgs.append(three_code_walk_ast(assignBlock.thenBlock, child, ast.label, symTable))
 
             elif ast.label == 'while':
@@ -142,6 +170,7 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
                     block.add_instruction(ret)
 
         if parent == 'stmt list':
+            # block.add_instruction("j {0}".format(block.thenBlock.label))
             return block.thenBlock
 
         if not block.thenBlock:
@@ -173,9 +202,6 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
     elif ast.label[:2] == ':=':
         instructionList = []
         if isinstance(retArgs[1], list):
-            # for instr in retArgs[1]:
-            #     if instr:
-            #         instructionList.append(instr)
             instructionList.extend(retArgs[1])
             if not ast.children[1].label.split(':')[0] == 'readInt':
                 sourceReg = instructionList[-1].split()[2][:-5]
@@ -225,8 +251,9 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
         # add the jump for the else block
         block.add_instruction("j {}".format(block.elseBlock))
 
-        # return the resume block. cond blk -> inside blk -> resume
-        return block.thenBlock.thenBlock
+        # return the next block
+        # could be the else statement or resume
+        return block.elseBlock
 
     elif ast.label == 'while':
         # add jump from previous block to this cond block
