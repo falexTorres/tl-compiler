@@ -72,4 +72,23 @@ Class Builder:
 
 #################################################
 
+codeGeneration.py
+
+generate_code(ast, base_name)
+Takes in an AST and the base name of the tl file. 
+Produces a CFG and MIPS source file.
+Calls three_code_gen(ast) which will take an ast and generate a block structure.
+
+
+A block is a structure which has a pointer for entryBlock, thenBlock, and elseBlock.
+Each block also has a label (composed of Block + its number) and a list of its instructions.
+
+Code generation is a two-part recursive method, three_code_walk_ast(block, ast, parent='program', symTable = None).
+When the method is called, the ast node will call the same method and pass its children as a parameter.
+The method checks the children before calling the recursive method to see if more blocks will need to be created. All of the blocks and most of the connections are done at this stage.
+
+Once a node has called all its children with the recursive method, it will handle the current ast node.
+The current node will take lists of returned strings from its children and combine it into one list, unless the node is a stmt list, if, or while. These nodes will pack all the instructions it has been given into its current block.
+Once this phase is down, the block structure will have all of the MIPS instructions.
+
 
