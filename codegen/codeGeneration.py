@@ -378,7 +378,7 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
 
 
         if ast.label[:1] == '*':
-            instructionList.append("mult $t0, $t1, $t2")
+            instructionList.append("mulo $t0, $t1, $t2")
         elif ast.label[:3] == 'div':
             instructionList.append("div $t0, $t1, $t2")
         elif ast.label[:3] == 'mod':
@@ -394,7 +394,7 @@ def three_code_walk_ast(block, ast, parent='program', symTable = None):
         elif ast.label[:2] == '<=':
             instructionList.append("sle $t0, $t1, $t2")
         elif ast.label[:2] == '>=':
-            instructionList.append("seq $t0, $t1, $t2")
+            instructionList.append("sge $t0, $t1, $t2")
         elif ast.label[:1] == '<':
             instructionList.append("slt $t0, $t1, $t2")
         elif ast.label[:1] == '>':
