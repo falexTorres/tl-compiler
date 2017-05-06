@@ -4,7 +4,8 @@ class MipsSource:
 	@staticmethod
 	def getMipsSource(cfg):
 		mips_source = "\t.data\nnewline:\n\t.asciiz\t\"\\n\"\n"
-		mips_source += "\n\t.text\n\t.globl\tBlock0\n"
+		mips_source += "\n\t.text\n\t.globl\tmain\n"
+		mips_source += "main:\n\tli $fp, 0x7ffffffc\n"
 		get_instructions = False
 		for line in cfg.split('\n'):
 			block_in_line = "Block" in line and ("<TR><TD border=\"1\" colspan=\"3\">Block") in line
@@ -26,4 +27,4 @@ class MipsSource:
 	@staticmethod
 	def writeAssemblyFile(source, base_name):
 		with open(base_name + '.s', 'w') as output:
-			output.write(source.replace('Block0', 'main'))
+			output.write(source)

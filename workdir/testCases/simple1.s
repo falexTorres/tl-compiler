@@ -4,8 +4,10 @@ newline:
 
 	.text
 	.globl	main
-
 main:
+	li $fp, 0x7ffffffc
+
+Block0:
 	li $t0, 0
 	sw $t0, 0($fp)
 	li $v0, 5
