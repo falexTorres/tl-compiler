@@ -26,4 +26,4 @@ class MipsSource:
 	@staticmethod
 	def writeAssemblyFile(source, base_name):
 		with open(base_name + '.s', 'w') as output:
-			output.write(source)
+			output.write(source.replace('Block0', 'main'))

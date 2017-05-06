@@ -1,4 +1,4 @@
-digraph simple1{
+digraph workdir/testCases/simple1{
 n0 [label="program", shape=box]
 n1 [label="decl list", shape=box]
 n2 [label="decl:X:int", shape=box]
