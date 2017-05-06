@@ -2,7 +2,7 @@ program
   var N as int ; 
   var SQRT as int ; 
 begin 
-  N := readint ; 
+  N := readInt ; 
   SQRT := 0 ; 
 
   while SQRT * SQRT <= N do 
@@ -11,6 +11,6 @@ begin
 
   SQRT := SQRT - 1 ;
 
-  writeint SQRT ; 
+  writeInt SQRT ; 
 
 end 

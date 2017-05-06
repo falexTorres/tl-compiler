@@ -1,0 +1,61 @@
+digraph workdir/testCases/sqrt{
+n0 [label="program", shape=box]
+n1 [label="decl list", shape=box]
+n2 [label="decl:N:int", shape=box]
+n3 [label="decl:SQRT:int", shape=box]
+n4 [label="stmt list", shape=box]
+n6 [label="N:int", shape=box]
+n5 [label=":=:int", shape=box]
+n7 [label="readInt:int", shape=box]
+n9 [label="SQRT:int", shape=box]
+n8 [label=":=:int", shape=box]
+n10 [label="0:int", shape=box]
+n11 [label="while", shape=box]
+n12 [label="<=:bool", shape=box]
+n13 [label="*:int", shape=box]
+n14 [label="SQRT:int", shape=box]
+n15 [label="SQRT:int", shape=box]
+n16 [label="N:int", shape=box]
+n17 [label="stmt list", shape=box]
+n19 [label="SQRT:int", shape=box]
+n18 [label=":=:int", shape=box]
+n20 [label="+:int", shape=box]
+n21 [label="SQRT:int", shape=box]
+n22 [label="1:int", shape=box]
+n24 [label="SQRT:int", shape=box]
+n23 [label=":=:int", shape=box]
+n25 [label="-:int", shape=box]
+n26 [label="SQRT:int", shape=box]
+n27 [label="1:int", shape=box]
+n28 [label="writeInt", shape=box]
+n29 [label="SQRT:int", shape=box]
+n0 -> n1
+n1 -> n2
+n1 -> n3
+n0 -> n4
+n5 -> n6
+n4 -> n5
+n5 -> n7
+n8 -> n9
+n4 -> n8
+n8 -> n10
+n4 -> n11
+n11 -> n12
+n12 -> n13
+n13 -> n14
+n13 -> n15
+n12 -> n16
+n11 -> n17
+n18 -> n19
+n17 -> n18
+n18 -> n20
+n20 -> n21
+n20 -> n22
+n23 -> n24
+n4 -> n23
+n23 -> n25
+n25 -> n26
+n25 -> n27
+n4 -> n28
+n28 -> n29
+}

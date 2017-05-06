@@ -1,0 +1,76 @@
+digraph tl16ControlFlow {
+   node [shape = box];
+   edge [tailport = s];
+   color="/x11/white"
+   entry
+   Block0 [label=<<TABLE ALIGN="LEFT" border="0">    <TR><TD border="1" colspan="3">Block0</TD></TR>
+   <TR><TD>li $t0, 0</TD></TR>
+   <TR><TD>sw $t0, 0($fp)</TD></TR>
+   <TR><TD>li $t0, 0</TD></TR>
+   <TR><TD>sw $t0, -4($fp)</TD></TR>
+   <TR><TD>li $v0, 5</TD></TR>
+   <TR><TD>syscall</TD></TR>
+   <TR><TD>add $t0, $v0, $zero</TD></TR>
+   <TR><TD>sw $t0, 0($fp)</TD></TR>
+   <TR><TD>li $t0, 0</TD></TR>
+   <TR><TD>sw $t0, -8($fp)</TD></TR>
+   <TR><TD>lw $t1, -8($fp)</TD></TR>
+   <TR><TD>add $t0, $t1, $zero</TD></TR>
+   <TR><TD>sw $t0, -4($fp)</TD></TR>
+   <TR><TD>j Block1</TD></TR>
+   </TABLE> >, ];
+
+   entry -> Block0
+   Block0 -> Block1
+   Block1 [label=<<TABLE ALIGN="LEFT" border="0">    <TR><TD border="1" colspan="3">Block1</TD></TR>
+   <TR><TD>lw $t1, -4($fp)</TD></TR>
+   <TR><TD>lw $t2, -4($fp)</TD></TR>
+   <TR><TD>mulo $t0, $t1, $t2</TD></TR>
+   <TR><TD>sw $t0, -12($fp)</TD></TR>
+   <TR><TD>lw $t1, -12($fp)</TD></TR>
+   <TR><TD>lw $t2, 0($fp)</TD></TR>
+   <TR><TD>sle $t0, $t1, $t2</TD></TR>
+   <TR><TD>sw $t0, -16($fp)</TD></TR>
+   <TR><TD>lw $t0, -16($fp)</TD></TR>
+   <TR><TD>bne $t0, $zero, Block3</TD></TR>
+   <TR><TD>j Block2</TD></TR>
+   </TABLE> >, ];
+
+   Block1 -> Block3
+   Block3 [label=<<TABLE ALIGN="LEFT" border="0">    <TR><TD border="1" colspan="3">Block3</TD></TR>
+   <TR><TD>li $t0, 1</TD></TR>
+   <TR><TD>sw $t0, -20($fp)</TD></TR>
+   <TR><TD>lw $t1, -4($fp)</TD></TR>
+   <TR><TD>lw $t2, -20($fp)</TD></TR>
+   <TR><TD>add $t0, $t1, $t2</TD></TR>
+   <TR><TD>sw $t0, -24($fp)</TD></TR>
+   <TR><TD>lw $t1, -24($fp)</TD></TR>
+   <TR><TD>add $t0, $t1, $zero</TD></TR>
+   <TR><TD>sw $t0, -4($fp)</TD></TR>
+   <TR><TD>j Block1</TD></TR>
+   </TABLE> >, ];
+
+   Block3 -> Block1
+   Block1 -> Block2
+   Block2 [label=<<TABLE ALIGN="LEFT" border="0">    <TR><TD border="1" colspan="3">Block2</TD></TR>
+   <TR><TD>lw $t1, -4($fp)</TD></TR>
+   <TR><TD>lw $t2, -20($fp)</TD></TR>
+   <TR><TD>sub $t0, $t1, $t2</TD></TR>
+   <TR><TD>sw $t0, -28($fp)</TD></TR>
+   <TR><TD>lw $t1, -28($fp)</TD></TR>
+   <TR><TD>add $t0, $t1, $zero</TD></TR>
+   <TR><TD>sw $t0, -4($fp)</TD></TR>
+   <TR><TD>li $v0, 1</TD></TR>
+   <TR><TD>lw $t1, -4($fp)</TD></TR>
+   <TR><TD>add $a0, $t1, $zero</TD></TR>
+   <TR><TD>syscall</TD></TR>
+   <TR><TD>li $v0, 4</TD></TR>
+   <TR><TD>la $a0, newline</TD></TR>
+   <TR><TD>syscall</TD></TR>
+   <TR><TD>li $v0, 10</TD></TR>
+   <TR><TD>syscall</TD></TR>
+   </TABLE> >, ];
+
+   exit
+   Block2 -> exit
+}

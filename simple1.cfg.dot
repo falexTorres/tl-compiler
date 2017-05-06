@@ -14,7 +14,7 @@ digraph tl16ControlFlow {
    <TR><TD>sw $t0, -4($fp)</TD></TR>
    <TR><TD>lw $t1, -4($fp)</TD></TR>
    <TR><TD>lw $t2, 0($fp)</TD></TR>
-   <TR><TD>mult $t0, $t1, $t2</TD></TR>
+   <TR><TD>mulo $t0, $t1, $t2</TD></TR>
    <TR><TD>sw $t0, -8($fp)</TD></TR>
    <TR><TD>li $v0, 1</TD></TR>
    <TR><TD>lw $t1, -8($fp)</TD></TR>

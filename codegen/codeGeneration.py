@@ -2,19 +2,20 @@ import re
 
 from codegen.block import Block
 import parser.ASTree
+from codegen.MipsSource import MipsSource
 
 operators = ['*', 'div', 'mod', '+', '-', '=', '!=', '<', '>', '<=', '>=']
 mips_source = ""
 
 def generate_code(ast, base_name):
-    mips_source = ""
-
     root_block = three_code_gen(ast)
     controlflow_graphviz = create_controlflow_graphviz(root_block)
     # create controlflow graphviz file
     with open(base_name + '.cfg.dot', 'w') as output:
         output.write(controlflow_graphviz)
-        output.close()
+
+    mips_source = MipsSource.getMipsSource(controlflow_graphviz)
+    MipsSource.writeAssemblyFile(mips_source, base_name)
 
     return True
 
