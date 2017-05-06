@@ -17,25 +17,27 @@ base_name = base_name[0]
 
 #send inputfile to lexer/scanner
 lexer_flag, tokens = lexer(inputFile, base_name)
-
-if not lexer_flag:
+if lexer_flag == False:
     print("\ncompilation failed due to LEXICAL error\n")
     sys.exit(2)
 
+# pass token stream to parser and get AST
 parser = Parser(base_name)
 parser_flag, ast = parser.parse(tokens)
-
-
-if not parser_flag:
+if parser_flag == False:
     print("\ncompilation failed due to PARSING error\n")
     sys.exit(2)
 
+# type check/variable check AST and get Symbol Table
 parser_flag, ast, symbolTable = ast_verify(ast)
-
 if parser_flag > 0:
     print("\ncompilation failed due to TYPE error\n")
     sys.exit(2)
 
-generate_code(ast, base_name)
+# generate MIPS assembly instructions
+generator_flag = generate_code(ast, base_name)
+if generator_flag == False:
+	print("\ncompilation failed during code generation due to unknown error\n")
+	sys.exit(2)
 
 print("\nCompilation of " + inputFile + " successful\n")   

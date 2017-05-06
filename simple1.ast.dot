@@ -1,0 +1,23 @@
+digraph simple1{
+n0 [label="program", shape=box]
+n1 [label="decl list", shape=box]
+n2 [label="decl:X:int", shape=box]
+n3 [label="stmt list", shape=box]
+n5 [label="X:int", shape=box]
+n4 [label=":=:int", shape=box]
+n6 [label="readInt:int", shape=box]
+n7 [label="writeInt", shape=box]
+n8 [label="*:int", shape=box]
+n9 [label="2:int", shape=box]
+n10 [label="X:int", shape=box]
+n0 -> n1
+n1 -> n2
+n0 -> n3
+n4 -> n5
+n3 -> n4
+n4 -> n6
+n3 -> n7
+n7 -> n8
+n8 -> n9
+n8 -> n10
+}

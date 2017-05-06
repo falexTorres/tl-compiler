@@ -4,14 +4,19 @@ from codegen.block import Block
 import parser.ASTree
 
 operators = ['*', 'div', 'mod', '+', '-', '=', '!=', '<', '>', '<=', '>=']
-
+mips_source = ""
 
 def generate_code(ast, base_name):
-    rootBlock = three_code_gen(ast)
+    mips_source = ""
 
+    root_block = three_code_gen(ast)
+    controlflow_graphviz = create_controlflow_graphviz(root_block)
+    # create controlflow graphviz file
     with open(base_name + '.cfg.dot', 'w') as output:
-        output.write(create_controlflow_graphviz(rootBlock))
+        output.write(controlflow_graphviz)
         output.close()
+
+    return True
 
 
 def three_code_gen(ast):

@@ -1,0 +1,33 @@
+digraph tl16ControlFlow {
+   node [shape = box];
+   edge [tailport = s];
+   color="/x11/white"
+   entry
+   Block0 [label=<<TABLE ALIGN="LEFT" border="0">    <TR><TD border="1" colspan="3">Block0</TD></TR>
+   <TR><TD>li $t0, 0</TD></TR>
+   <TR><TD>sw $t0, 0($fp)</TD></TR>
+   <TR><TD>li $v0, 5</TD></TR>
+   <TR><TD>syscall</TD></TR>
+   <TR><TD>add $t0, $v0, $zero</TD></TR>
+   <TR><TD>sw $t0, 0($fp)</TD></TR>
+   <TR><TD>li $t0, 2</TD></TR>
+   <TR><TD>sw $t0, -4($fp)</TD></TR>
+   <TR><TD>lw $t1, -4($fp)</TD></TR>
+   <TR><TD>lw $t2, 0($fp)</TD></TR>
+   <TR><TD>mult $t0, $t1, $t2</TD></TR>
+   <TR><TD>sw $t0, -8($fp)</TD></TR>
+   <TR><TD>li $v0, 1</TD></TR>
+   <TR><TD>lw $t1, -8($fp)</TD></TR>
+   <TR><TD>add $a0, $t1, $zero</TD></TR>
+   <TR><TD>syscall</TD></TR>
+   <TR><TD>li $v0, 4</TD></TR>
+   <TR><TD>la $a0, newline</TD></TR>
+   <TR><TD>syscall</TD></TR>
+   <TR><TD>li $v0, 10</TD></TR>
+   <TR><TD>syscall</TD></TR>
+   </TABLE> >, ];
+
+   entry -> Block0
+   exit
+   Block0 -> exit
+}
